@@ -1,0 +1,5 @@
+Panappticon is a system for observing interaction with iPhone apps in beta. It consists of an Objective-C library on the iPhone and a Django application on the server.
+
+The client records events and takes screenshots during interaction with the application, and sends them back to the server. The server allows the developer to see clickstreams that beta users took through the app, with timestamps and screenshots.
+
+Panappticon is meant to help developers reason about the way their beta users are using their app for ui/ux troubleshooting and rapid app iteration during beta.
