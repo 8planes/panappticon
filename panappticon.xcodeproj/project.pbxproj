@@ -15,6 +15,26 @@
 		CD7468F712077BA2003D0095 /* PanappticonDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7468F512077BA2003D0095 /* PanappticonDatabase.m */; };
 		CD7468FA12077BAD003D0095 /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = CD7468F812077BAD003D0095 /* Utilities.h */; };
 		CD7468FB12077BAD003D0095 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7468F912077BAD003D0095 /* Utilities.m */; };
+		CD74691A12077FEE003D0095 /* UploadQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = CD74691812077FEE003D0095 /* UploadQueue.h */; };
+		CD74691B12077FEE003D0095 /* UploadQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CD74691912077FEE003D0095 /* UploadQueue.m */; };
+		CD746AA2120DCBDB003D0095 /* ASIAuthenticationDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A92120DCBDB003D0095 /* ASIAuthenticationDialog.h */; };
+		CD746AA3120DCBDB003D0095 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = CD746A93120DCBDB003D0095 /* ASIAuthenticationDialog.m */; };
+		CD746AA4120DCBDB003D0095 /* ASICacheDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A94120DCBDB003D0095 /* ASICacheDelegate.h */; };
+		CD746AA5120DCBDB003D0095 /* ASIDownloadCache.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A95120DCBDB003D0095 /* ASIDownloadCache.h */; };
+		CD746AA6120DCBDB003D0095 /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = CD746A96120DCBDB003D0095 /* ASIDownloadCache.m */; };
+		CD746AA7120DCBDB003D0095 /* ASIFormDataRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A97120DCBDB003D0095 /* ASIFormDataRequest.h */; };
+		CD746AA8120DCBDB003D0095 /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD746A98120DCBDB003D0095 /* ASIFormDataRequest.m */; };
+		CD746AA9120DCBDB003D0095 /* ASIHTTPRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A99120DCBDB003D0095 /* ASIHTTPRequest.h */; };
+		CD746AAA120DCBDB003D0095 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD746A9A120DCBDB003D0095 /* ASIHTTPRequest.m */; };
+		CD746AAB120DCBDB003D0095 /* ASIHTTPRequestConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A9B120DCBDB003D0095 /* ASIHTTPRequestConfig.h */; };
+		CD746AAC120DCBDB003D0095 /* ASIHTTPRequestDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A9C120DCBDB003D0095 /* ASIHTTPRequestDelegate.h */; };
+		CD746AAD120DCBDB003D0095 /* ASIInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A9D120DCBDB003D0095 /* ASIInputStream.h */; };
+		CD746AAE120DCBDB003D0095 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CD746A9E120DCBDB003D0095 /* ASIInputStream.m */; };
+		CD746AAF120DCBDB003D0095 /* ASINetworkQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746A9F120DCBDB003D0095 /* ASINetworkQueue.h */; };
+		CD746AB0120DCBDB003D0095 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CD746AA0120DCBDB003D0095 /* ASINetworkQueue.m */; };
+		CD746AB1120DCBDB003D0095 /* ASIProgressDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746AA1120DCBDB003D0095 /* ASIProgressDelegate.h */; };
+		CD746B13120DD3A2003D0095 /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = CD746B11120DD3A2003D0095 /* Reachability.h */; };
+		CD746B14120DD3A2003D0095 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CD746B12120DD3A2003D0095 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +46,26 @@
 		CD7468F512077BA2003D0095 /* PanappticonDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanappticonDatabase.m; sourceTree = "<group>"; };
 		CD7468F812077BAD003D0095 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		CD7468F912077BAD003D0095 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		CD74691812077FEE003D0095 /* UploadQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadQueue.h; sourceTree = "<group>"; };
+		CD74691912077FEE003D0095 /* UploadQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadQueue.m; sourceTree = "<group>"; };
+		CD746A92120DCBDB003D0095 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = PAN_LIB; };
+		CD746A93120DCBDB003D0095 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = PAN_LIB; };
+		CD746A94120DCBDB003D0095 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = PAN_LIB; };
+		CD746A95120DCBDB003D0095 /* ASIDownloadCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDownloadCache.h; sourceTree = PAN_LIB; };
+		CD746A96120DCBDB003D0095 /* ASIDownloadCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDownloadCache.m; sourceTree = PAN_LIB; };
+		CD746A97120DCBDB003D0095 /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIFormDataRequest.h; sourceTree = PAN_LIB; };
+		CD746A98120DCBDB003D0095 /* ASIFormDataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIFormDataRequest.m; sourceTree = PAN_LIB; };
+		CD746A99120DCBDB003D0095 /* ASIHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequest.h; sourceTree = PAN_LIB; };
+		CD746A9A120DCBDB003D0095 /* ASIHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIHTTPRequest.m; sourceTree = PAN_LIB; };
+		CD746A9B120DCBDB003D0095 /* ASIHTTPRequestConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestConfig.h; sourceTree = PAN_LIB; };
+		CD746A9C120DCBDB003D0095 /* ASIHTTPRequestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestDelegate.h; sourceTree = PAN_LIB; };
+		CD746A9D120DCBDB003D0095 /* ASIInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIInputStream.h; sourceTree = PAN_LIB; };
+		CD746A9E120DCBDB003D0095 /* ASIInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIInputStream.m; sourceTree = PAN_LIB; };
+		CD746A9F120DCBDB003D0095 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASINetworkQueue.h; sourceTree = PAN_LIB; };
+		CD746AA0120DCBDB003D0095 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASINetworkQueue.m; sourceTree = PAN_LIB; };
+		CD746AA1120DCBDB003D0095 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIProgressDelegate.h; sourceTree = PAN_LIB; };
+		CD746B11120DD3A2003D0095 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = PAN_LIB; };
+		CD746B12120DD3A2003D0095 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = PAN_LIB; };
 		D2AAC07E0554694100DB518D /* libpanappticon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpanappticon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -71,12 +111,15 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CD746A8C120DCB93003D0095 /* ASIHTTP */,
 				CD7468F012077B90003D0095 /* PanappticonSession.h */,
 				CD7468F112077B90003D0095 /* PanappticonSession.m */,
 				CD7468F412077BA2003D0095 /* PanappticonDatabase.h */,
 				CD7468F512077BA2003D0095 /* PanappticonDatabase.m */,
 				CD7468F812077BAD003D0095 /* Utilities.h */,
 				CD7468F912077BAD003D0095 /* Utilities.m */,
+				CD74691812077FEE003D0095 /* UploadQueue.h */,
+				CD74691912077FEE003D0095 /* UploadQueue.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -87,6 +130,31 @@
 				AA747D9E0F9514B9006C5449 /* panappticon_Prefix.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		CD746A8C120DCB93003D0095 /* ASIHTTP */ = {
+			isa = PBXGroup;
+			children = (
+				CD746B11120DD3A2003D0095 /* Reachability.h */,
+				CD746B12120DD3A2003D0095 /* Reachability.m */,
+				CD746A92120DCBDB003D0095 /* ASIAuthenticationDialog.h */,
+				CD746A93120DCBDB003D0095 /* ASIAuthenticationDialog.m */,
+				CD746A94120DCBDB003D0095 /* ASICacheDelegate.h */,
+				CD746A95120DCBDB003D0095 /* ASIDownloadCache.h */,
+				CD746A96120DCBDB003D0095 /* ASIDownloadCache.m */,
+				CD746A97120DCBDB003D0095 /* ASIFormDataRequest.h */,
+				CD746A98120DCBDB003D0095 /* ASIFormDataRequest.m */,
+				CD746A99120DCBDB003D0095 /* ASIHTTPRequest.h */,
+				CD746A9A120DCBDB003D0095 /* ASIHTTPRequest.m */,
+				CD746A9B120DCBDB003D0095 /* ASIHTTPRequestConfig.h */,
+				CD746A9C120DCBDB003D0095 /* ASIHTTPRequestDelegate.h */,
+				CD746A9D120DCBDB003D0095 /* ASIInputStream.h */,
+				CD746A9E120DCBDB003D0095 /* ASIInputStream.m */,
+				CD746A9F120DCBDB003D0095 /* ASINetworkQueue.h */,
+				CD746AA0120DCBDB003D0095 /* ASINetworkQueue.m */,
+				CD746AA1120DCBDB003D0095 /* ASIProgressDelegate.h */,
+			);
+			name = ASIHTTP;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -100,6 +168,18 @@
 				CD7468F212077B90003D0095 /* PanappticonSession.h in Headers */,
 				CD7468F612077BA2003D0095 /* PanappticonDatabase.h in Headers */,
 				CD7468FA12077BAD003D0095 /* Utilities.h in Headers */,
+				CD74691A12077FEE003D0095 /* UploadQueue.h in Headers */,
+				CD746AA2120DCBDB003D0095 /* ASIAuthenticationDialog.h in Headers */,
+				CD746AA4120DCBDB003D0095 /* ASICacheDelegate.h in Headers */,
+				CD746AA5120DCBDB003D0095 /* ASIDownloadCache.h in Headers */,
+				CD746AA7120DCBDB003D0095 /* ASIFormDataRequest.h in Headers */,
+				CD746AA9120DCBDB003D0095 /* ASIHTTPRequest.h in Headers */,
+				CD746AAB120DCBDB003D0095 /* ASIHTTPRequestConfig.h in Headers */,
+				CD746AAC120DCBDB003D0095 /* ASIHTTPRequestDelegate.h in Headers */,
+				CD746AAD120DCBDB003D0095 /* ASIInputStream.h in Headers */,
+				CD746AAF120DCBDB003D0095 /* ASINetworkQueue.h in Headers */,
+				CD746AB1120DCBDB003D0095 /* ASIProgressDelegate.h in Headers */,
+				CD746B13120DD3A2003D0095 /* Reachability.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +229,14 @@
 				CD7468F312077B90003D0095 /* PanappticonSession.m in Sources */,
 				CD7468F712077BA2003D0095 /* PanappticonDatabase.m in Sources */,
 				CD7468FB12077BAD003D0095 /* Utilities.m in Sources */,
+				CD74691B12077FEE003D0095 /* UploadQueue.m in Sources */,
+				CD746AA3120DCBDB003D0095 /* ASIAuthenticationDialog.m in Sources */,
+				CD746AA6120DCBDB003D0095 /* ASIDownloadCache.m in Sources */,
+				CD746AA8120DCBDB003D0095 /* ASIFormDataRequest.m in Sources */,
+				CD746AAA120DCBDB003D0095 /* ASIHTTPRequest.m in Sources */,
+				CD746AAE120DCBDB003D0095 /* ASIInputStream.m in Sources */,
+				CD746AB0120DCBDB003D0095 /* ASINetworkQueue.m in Sources */,
+				CD746B14120DD3A2003D0095 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,8 +11,6 @@
 
 @interface PanappticonSession : NSObject {
   NSString *_appName;
-  NSString *_sessionID;
-  NSDate *_sessionStart;
 }
 
 + (PanappticonSession*)instance;

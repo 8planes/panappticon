@@ -12,15 +12,18 @@
 @interface PanappticonDatabase : NSObject {
   // can be accessed by any thread
   NSOperationQueue *_operationQueue;
+  NSString *_appName;
+  NSString *_sessionID;
+  NSTimer *_cleanupTimer;
+  NSString *_sessionFileDir;
+  NSString *_sessionFile;
+  NSString *_imageFileDir;
 }
 
 + (PanappticonDatabase*)instance;
 
-+ (void)saveTag:(NSString*)tagName 
-         forApp:(NSString*)appName 
-     forSession:(NSString*)session 
- withScreenshot:(UIImage*)screenshot;
-
-+ (void)flushToURL:(NSString*)url;
+- (void)start:(NSString *)appName;
+- (void)saveTag:(NSString*)tagName withScreenshot:(UIImage*)screenshot;
+- (void)endSession;
 
 @end

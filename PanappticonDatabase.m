@@ -8,6 +8,7 @@
 
 #import "PanappticonDatabase.h"
 #import "Utilities.h"
+#import "UploadQueue.h"
 
 #import <UIKit/UIKit.h>
 
@@ -15,9 +16,13 @@ static PanappticonDatabase *_instance = nil;
 
 @interface PanappticonDatabase()
 
-- (void)addOperation:(NSOperation*)operation;
 - (void)saveTagImpl:(NSArray*)args;
-- (void)flushToURLImpl:(NSString*)url;
+- (void)endSessionImpl;
+- (void)ensurePathExists:(NSString*)path;
+- (void)createSessionFile;
+- (void)appendToSessionFile:(NSString*)tagName screenshotKey:(NSString*)screenshotKey;
+- (void)appendStringToSessionFile:(NSString*)string;
+- (void)saveAndSendImageFile:(UIImage*)screenshot withKey:(NSString*)screenshotKey;
 
 @end
 
@@ -26,25 +31,57 @@ static PanappticonDatabase *_instance = nil;
 
 - (PanappticonDatabase*)init {
   if (self = [super init]) {
+    _appName = nil;
     _operationQueue = [[NSOperationQueue alloc] init];
     _operationQueue.maxConcurrentOperationCount = 1;
+    NSString *docPath = 
+      [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                           NSUserDomainMask, YES) 
+       objectAtIndex:0];
+    _sessionFileDir = [docPath stringByAppendingPathComponent:@"panappticon/"];
+    _imageFileDir = [docPath stringByAppendingPathComponent:@"pannapticon/screenshots/"];
   }
   return self;
 }
 
 + (PanappticonDatabase*)instance {
   @synchronized (self) {
-    if (_instance == nil)
+    if (!_instance)
       _instance = [[PanappticonDatabase alloc] init];
   }
   return _instance;
 }
 
-+ (void)saveTag:(NSString*)tagName 
-         forApp:(NSString*)appName 
-     forSession:(NSString*)session 
- withScreenshot:(UIImage*)screenshot {
-  NSArray *args = [NSArray arrayWithObjects:tagName, appName, session, 
+- (void)start:(NSString *)appName {
+  @synchronized (self) {
+    if (_appName != nil)
+      @throw [NSException exceptionWithName:@"AlreadyStarted" 
+                                     reason:@"Panappticon Database Already Started" 
+                                   userInfo:nil];
+    _appName = [appName retain];
+    NSOperation *startOperation = [[NSInvocationOperation alloc]
+                                   initWithTarget:self 
+                                   selector:@selector(createSessionFile) 
+                                   object:nil];
+    [_operationQueue addOperation:startOperation];
+    [startOperation release];
+  }
+  _cleanupTimer = 
+    [NSTimer timerWithTimeInterval:60.0 
+                            target:self 
+                          selector:@selector(cleanupNow)
+                          userInfo:nil 
+                           repeats:YES];
+}
+
+- (void)saveTag:(NSString*)tagName withScreenshot:(UIImage*)screenshot {
+  @synchronized (self) {
+    if (_appName == nil) 
+      @throw [NSException exceptionWithName:@"NotStarted" 
+                                     reason:@"Panappticon Database Not Started" 
+                                   userInfo:nil];
+  }
+  NSArray *args = [NSArray arrayWithObjects:tagName,  
                    (screenshot == nil ? 
                     (NSObject*)[NSNull null] : 
                     (NSObject*)screenshot), 
@@ -53,41 +90,101 @@ static PanappticonDatabase *_instance = nil;
                             initWithTarget:self 
                             selector:@selector(saveTagImpl:) 
                             object:args];
-  [[PanappticonDatabase instance] addOperation:operation];
+  [_operationQueue addOperation:operation];
   [operation release];
 }
 
-+ (void)flushToURL:(NSString*)url {
+- (void)endSession {
+  @synchronized (self) {
+    if (_appName == nil) 
+      @throw [NSException exceptionWithName:@"NotStarted" 
+                                     reason:@"Panappticon Database Not Started" 
+                                   userInfo:nil];
+  }
   NSOperation *operation = [[NSInvocationOperation alloc]
-                            initWithTarget:self 
-                            selector:@selector(flushToURLImpl:) 
-                            object:url];
-  [[PanappticonDatabase instance] addOperation:operation];
+                            initWithTarget:self selector:@selector(endSessionImpl) object:nil];
+  [_operationQueue addOperation:operation];
   [operation release];
+}
+
+- (void)dealloc {
+  
+  [super dealloc];
 }
 
 #pragma mark -
 #pragma mark Private Methods
 
-- (void)addOperation:(NSOperation*)operation {
-  [_operationQueue addOperation:operation];
-}
-
 - (void)saveTagImpl:(NSArray*)args {
   NSString *tagName = [args objectAtIndex:0];
-  NSString *appName = [args objectAtIndex:1];
-  NSString *sessionID = [args objectAtIndex:2];
-  UIImage *screenshot = 
-  [args objectAtIndex:3] == [NSNull null] ? 
-  nil : [args objectAtIndex:3];
-  NSString* screenshotString = @"";
-  if (screenshot != nil)
-    screenshotString = [Utilities base64Encode:UIImagePNGRepresentation(screenshot)];
-  
+  NSObject *screenshotObj = [args objectAtIndex:1];
+  UIImage *screenshot = nil;
+  NSString * screenshotKey = @"";
+  if (screenshotObj != [NSNull null]) {
+    screenshot = (UIImage*)screenshotObj;
+    screenshotKey = [Utilities randomString];
+    [self saveAndSendImageFile:screenshot withKey:screenshotKey];
+  }
+  [self appendToSessionFile:tagName screenshotKey:screenshotKey];
 }
 
-- (void)flushToURLImpl:(NSString*)url {
-  
+- (void)ensurePathExists:(NSString*)path {
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  if (![fileManager fileExistsAtPath:path])
+    [fileManager createDirectoryAtPath:path 
+           withIntermediateDirectories:YES 
+                            attributes:nil 
+                                 error:NULL];
+}
+
+- (void)createSessionFile {
+  _sessionID = [[Utilities randomString] retain];
+  [self ensurePathExists:_sessionFileDir];
+  [self ensurePathExists:_imageFileDir];
+  _sessionFile = [_sessionFileDir stringByAppendingPathComponent:
+                  [NSString stringWithFormat:@"%@.txt", _sessionID]];
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSData *blank = [[NSData alloc] init];
+  [fileManager createFileAtPath:_sessionFile contents:blank attributes:nil];
+  [blank release];
+  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n\n",
+                                   _appName, _sessionID, [NSDate date]]];
+}
+
+- (void)appendStringToSessionFile:(NSString*)string {
+  NSFileHandle *sessionFile = [NSFileHandle fileHandleForWritingAtPath:_sessionFile];
+  [sessionFile truncateFileAtOffset:[sessionFile seekToEndOfFile]];
+  [sessionFile writeData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+  [sessionFile closeFile];
+}
+
+- (void)appendToSessionFile:(NSString*)tagName screenshotKey:(NSString*)screenshotKey {
+  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n\n",
+                                   tagName, screenshotKey, [NSDate date]]];
+}
+
+- (void)saveAndSendImageFile:(UIImage*)screenshot withKey:(NSString*)screenshotKey {
+  NSString *imageFileName = 
+    [_imageFileDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", screenshotKey]];
+  NSData* imageData = UIImagePNGRepresentation(screenshot);
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  [fileManager createFileAtPath:imageFileName contents:imageData attributes:nil];
+  [[UploadQueue instance] uploadFile:imageFileName withContentType:@"image/png"];
+}
+   
+- (void)endSessionImpl {
+  [[UploadQueue instance] uploadFile:_sessionFile withContentType:@"plain/text"];
+}
+
+- (void)cleanupNow {
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSArray *fileList = [fileManager contentsOfDirectoryAtPath:_sessionFileDir error:nil];
+  for (NSString* file in fileList)
+    if (file != _sessionFile)
+      [[UploadQueue instance] uploadFile:file withContentType:@"plain/text"];
+  fileList = [fileManager contentsOfDirectoryAtPath:_imageFileDir error:nil];
+  for (NSString* file in fileList)
+    [[UploadQueue instance] uploadFile:file withContentType:@"plain/png"];
 }
 
 @end

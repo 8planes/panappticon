@@ -26,8 +26,6 @@ static PanappticonSession *_instance = nil;
 - (PanappticonSession*)init {
   if (self = [super init]) {
     self->_appName = nil;
-    self->_sessionStart = nil;
-    self->_sessionID = nil;
   }
   return self;
 }
@@ -57,19 +55,14 @@ static PanappticonSession *_instance = nil;
       @throw [NSException exceptionWithName:@"AlreadyStarted" 
                                      reason:@"Panappticon Session Already Started" 
                                    userInfo:nil];
-    _appName = appName;
-    _sessionID = [Utilities randomString];
-    _sessionStart = [[NSDate alloc] init];
+    _appName = [appName retain];
   }
-  [PanappticonDatabase saveTag:@"SessionStarted" forApp:_appName 
-                   forSession:_sessionID withScreenshot:nil];
+  [[PanappticonDatabase instance] 
+    start:_instance->_appName];
 }
 
 - (void)tagImplWithImage:(NSString*)tagName withScreenshot:(UIImage*)screenshot {
-  [PanappticonDatabase saveTag:tagName 
-                       forApp:_appName 
-                   forSession:_sessionID 
-               withScreenshot:screenshot];
+  [[PanappticonDatabase instance] saveTag:tagName withScreenshot:screenshot];
 }
 
 - (void)takeScreenshotAndTag:(NSString*)tagName {
