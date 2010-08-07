@@ -10,46 +10,14 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-static char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 @implementation Utilities
-
-+ (NSString*)encode:(const uint8_t*) input length:(NSInteger) length {
-  // Thanks to Cyrus Najmabadi
-  // From http://www.cocoadev.com/index.pl?BaseSixtyFour
-  NSMutableData* data = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
-  uint8_t* output = (uint8_t*)data.mutableBytes;
-  
-  for (NSInteger i = 0; i < length; i += 3) {
-    NSInteger value = 0;
-    for (NSInteger j = i; j < (i + 3); j++) {
-      value <<= 8;
-      
-      if (j < length) {
-        value |= (0xFF & input[j]);
-      }
-    }
-    
-    NSInteger index = (i / 3) * 4;
-    output[index + 0] =                    encodingTable[(value >> 18) & 0x3F];
-    output[index + 1] =                    encodingTable[(value >> 12) & 0x3F];
-    output[index + 2] = (i + 1) < length ? encodingTable[(value >> 6)  & 0x3F] : '=';
-    output[index + 3] = (i + 2) < length ? encodingTable[(value >> 0)  & 0x3F] : '=';
-  }
-  
-  return [[[NSString alloc] initWithData:data
-                                encoding:NSASCIIStringEncoding] autorelease];
-}
 
 + (NSString*)randomString {
   CFUUIDRef theUUID = CFUUIDCreate(NULL);
   CFStringRef stringUUID = CFUUIDCreateString(NULL, theUUID);
   CFRelease(theUUID);
   return [(NSString *)stringUUID autorelease];
-}
-
-+ (NSString*)base64Encode:(NSData*)data {
-  return [self encode:(const uint8_t*)data.bytes length:data.length];
 }
 
 + (UIImage*)screenshot {

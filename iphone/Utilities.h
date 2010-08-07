@@ -12,7 +12,6 @@
 @interface Utilities : NSObject {}
 
 + (NSString*)randomString;
-+ (NSString*)base64Encode:(NSData*)data;
 + (UIImage*)screenshot;
 
 @end
