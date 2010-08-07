@@ -47,11 +47,6 @@ def _create_tag(line_no, lines, session, file_upload):
         date = date,
         screenshot_key = screenshot_key)
     if len(screenshot_key) > 0 and \
-            models.ScreenshotOrphan.objects.exists(
-        screenshot_key=screenshot_key):
-        screenshot_orphan = models.ScreenshotOrphan.get(
-            screenshot_key=screenshot_key)
-        screenshot = screenshot_orphan.screenshot
-        tag.screenshot = screenshot
-        screenshot_orphan.delete()
+            models.Screenshot.objects.exists(key=screenshot_key):
+        tag.screenshot = models.Screenshot.get(key=screenshot_key)
     tag.save()

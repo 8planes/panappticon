@@ -21,14 +21,12 @@ def _handle_upload(request):
     return HttpResponse("yes!", mimetype="text/plain")
 
 def _handle_screenshot_upload(file):
-    name, ext = os.path.splitext(file)
+    name, ext = os.path.splitext(file.name)
+    screenshot, created = models.Screenshot.get_or_create(
+        key=name,
+        defaults={'image': file})
     tags = list(models.Tag.objects.filter(screenshot_key__exact=name))
-    if len(tags) == 0:
-        screenshot_orphan = ScreenshotOrphan(
-            screenshot_key=name,
-            screenshot=file)
-        screenshot_orphan.save()
-    else:
+    if len(tags) > 0:
         tag = tags[0]
-        tag.screnshot = file
+        tag.screenshot = screenshot
         tag.save()
