@@ -147,8 +147,10 @@ static PanappticonDatabase *_instance = nil;
   NSData *blank = [[NSData alloc] init];
   [fileManager createFileAtPath:_sessionFile contents:blank attributes:nil];
   [blank release];
-  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n%@\n\n",
-                                   [Utilities randomString], _appName, _sessionID, [NSDate date]]];
+  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n\n",
+                                   [Utilities randomString], _appName, 
+                                   [[UIDevice currentDevice] uniqueIdentifier],
+                                   _sessionID, [NSDate date]]];
 }
 
 - (void)appendStringToSessionFile:(NSString*)string {
@@ -171,7 +173,7 @@ static PanappticonDatabase *_instance = nil;
   [fileManager createFileAtPath:imageFileName contents:imageData attributes:nil];
   [[UploadQueue instance] uploadFile:imageFileName withContentType:@"image/png"];
 }
-   
+
 - (void)endSessionImpl {
   [[UploadQueue instance] uploadFile:_sessionFile withContentType:@"plain/text"];
 }
