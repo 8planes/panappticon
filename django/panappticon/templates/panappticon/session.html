@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{session.session_id}}</h2>
+<h2>{{session.start_time}}</h2>
+<table>
+  {% for tag in tags %}
+  <tr>
+    <td>{{tag.date}}</td>
+    <td>{{tag.tag}}</td>
+    <td>
+      {% if tag.screenshot %}
+      <img src="{{MEDIA_URL}}{{tag.screenshot.image.url}}"/>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

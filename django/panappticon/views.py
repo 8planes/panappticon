@@ -18,6 +18,11 @@ def user(request, id):
     user = models.ApplicationUser.objects.get(id=id)
     return {'user': user, 'sessions': user.session_set.all() }
 
+@render_to('panappticon/session.html')
+def session(request, id):
+    session = models.Session.objects.get(id=id)
+    return { 'session': session, 'tags': session.tag_set.all() }
+
 @csrf_exempt
 def iphone_upload(request):
     try:
