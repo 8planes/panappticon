@@ -20,6 +20,8 @@ static PanappticonSession *_instance = nil;
 - (void)startImpl:(NSString*)appName;
 - (void)tagImpl:(NSString*)tagName includeScreenshot:(BOOL)include;
 - (void)applicationTerminating;
+- (void)applicationSuspending;
+- (void)applicationUnsuspending;
 
 @end
 
@@ -60,9 +62,16 @@ static PanappticonSession *_instance = nil;
                                    userInfo:nil];
     _appName = [appName retain];
   }
-  [[NSNotificationCenter defaultCenter] 
+  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+  [center
    addObserver:self selector:@selector(applicationTerminating) 
    name:UIApplicationWillTerminateNotification object:[UIApplication sharedApplication]];
+  [center
+   addObserver:self selector:@selector(applicationSuspending) 
+   name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
+  [center
+   addObserver:self selector:@selector(applicationUnsuspending) 
+   name:UIApplicationWillEnterForegroundNotification object:[UIApplication sharedApplication]];
   [[PanappticonDatabase instance] start:_instance->_appName];
 }
 
@@ -75,7 +84,15 @@ static PanappticonSession *_instance = nil;
 }
 
 - (void)applicationTerminating {
-  [[PanappticonDatabase instance] endSession];
+  [[PanappticonDatabase instance] endSession:NO];
+}
+
+- (void)applicationSuspending {
+  [[PanappticonDatabase instance] endSession:YES];
+}
+
+- (void)applicationUnsuspending {
+  [[PanappticonDatabase instance] newSession];
 }
 
 - (void)tagImpl:(NSString*)tagName includeScreenshot:(BOOL)include {

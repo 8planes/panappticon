@@ -58,11 +58,16 @@ static UploadQueue *_instance = nil;
     return;
 
   ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:_url];
+  NSLog(@"Uploading %@", fileName);
   [request setFile:fileName withFileName:lastComponent andContentType:contentType forKey:@"file"];
   [request startSynchronous];
+  NSLog(@"Finished uploading %@", fileName);
   NSError *error = [request error];
-  if (!error)
+  if (!error) {
+    NSLog(@"Deleting %@", fileName);
     [fileManager removeItemAtPath:fileName error:nil];
+  } else 
+    NSLog(@"Error: %@", error);
 }
 
 @end

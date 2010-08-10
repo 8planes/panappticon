@@ -24,6 +24,8 @@
 
 - (void)start:(NSString *)appName;
 - (void)saveTag:(NSString*)tagName withScreenshot:(UIImage*)screenshot;
-- (void)endSession;
+- (void)endSession:(BOOL)suspended;
+/** Only called when app is unsuspended */
+- (void)newSession;
 
 @end

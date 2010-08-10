@@ -17,12 +17,14 @@ static PanappticonDatabase *_instance = nil;
 @interface PanappticonDatabase()
 
 - (void)saveTagImpl:(NSArray*)args;
-- (void)endSessionImpl;
+- (void)endSessionImpl:(NSNumber*)suspended;
 - (void)ensurePathExists:(NSString*)path;
 - (void)createSessionFile;
 - (void)appendToSessionFile:(NSString*)tagName screenshotKey:(NSString*)screenshotKey;
 - (void)appendStringToSessionFile:(NSString*)string;
 - (void)saveAndSendImageFile:(UIImage*)screenshot withKey:(NSString*)screenshotKey;
+- (void)cleanupNow;
+- (void)cleanupNowImpl;
 
 @end
 
@@ -39,7 +41,7 @@ static PanappticonDatabase *_instance = nil;
                                            NSUserDomainMask, YES) 
        objectAtIndex:0];
     _sessionFileDir = [[docPath stringByAppendingPathComponent:@"panappticon/"] retain];
-    _imageFileDir = [[docPath stringByAppendingPathComponent:@"pannapticon/screenshots/"] retain];
+    _imageFileDir = [[docPath stringByAppendingPathComponent:@"panappticon/screenshots/"] retain];
   }
   return self;
 }
@@ -95,7 +97,7 @@ static PanappticonDatabase *_instance = nil;
   [operation release];
 }
 
-- (void)endSession {
+- (void)endSession:(BOOL)suspended {
   @synchronized (self) {
     if (_appName == nil) 
       @throw [NSException exceptionWithName:@"NotStarted" 
@@ -103,9 +105,19 @@ static PanappticonDatabase *_instance = nil;
                                    userInfo:nil];
   }
   NSOperation *operation = [[NSInvocationOperation alloc]
-                            initWithTarget:self selector:@selector(endSessionImpl) object:nil];
+                            initWithTarget:self selector:@selector(endSessionImpl:) 
+                            object:[NSNumber numberWithBool:suspended]];
   [_operationQueue addOperation:operation];
   [operation release];
+}
+
+- (void)newSession {
+  NSOperation *operation = [[NSInvocationOperation alloc]
+                            initWithTarget:self selector:@selector(createSessionFile) 
+                            object:nil];
+  [_operationQueue addOperation:operation];
+  [operation release];
+  
 }
 
 - (void)dealloc {
@@ -175,23 +187,33 @@ static PanappticonDatabase *_instance = nil;
   [[UploadQueue instance] uploadFile:imageFileName withContentType:@"image/png"];
 }
 
-- (void)endSessionImpl {
+- (void)endSessionImpl:(NSNumber*)suspended {
+  NSLog(@"Application suspended");
+  if ([suspended boolValue])
+    [self appendToSessionFile:@"Application Suspended" screenshotKey:nil];
   [[UploadQueue instance] uploadFile:_sessionFile withContentType:@"plain/text"];
 }
 
 - (void)cleanupNow {
+  NSOperation *operation = [[NSInvocationOperation alloc]
+                            initWithTarget:self selector:@selector(cleanupNowImpl) object:nil];
+  [_operationQueue addOperation:operation];
+  [operation release];
+}
+
+- (void)cleanupNowImpl {
   NSFileManager *fileManager = [NSFileManager defaultManager];
   NSArray *fileList = [fileManager contentsOfDirectoryAtPath:_sessionFileDir error:nil];
   NSString *fullFileName;
   for (NSString* file in fileList) {
     fullFileName = [_sessionFileDir stringByAppendingPathComponent:file];
-    if (fullFileName != _sessionFile)
+    if (![fullFileName isEqualToString:_sessionFile] && ![file isEqualToString:@"screenshots"])
       [[UploadQueue instance] uploadFile:fullFileName withContentType:@"plain/text"];
   }
   fileList = [fileManager contentsOfDirectoryAtPath:_imageFileDir error:nil];
   for (NSString* file in fileList)
     [[UploadQueue instance] uploadFile:
-     [_sessionFileDir stringByAppendingPathComponent:file] 
+     [_imageFileDir stringByAppendingPathComponent:file] 
                        withContentType:@"plain/png"];
 }
 

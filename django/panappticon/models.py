@@ -34,5 +34,5 @@ class Tag(models.Model):
     tag = models.CharField(max_length=1023)
     date = models.DateTimeField(null=False)
     screenshot_key = models.CharField(max_length=255, blank=True)
-    screenshot = models.ForeignKey(Screenshot)
+    screenshot = models.ForeignKey(Screenshot, null=True)
 
