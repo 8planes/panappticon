@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{user.iphone_udid}}</h2>
+<table>
+  {% for session in sessions %}
+  <tr><td>{{session.session_id}}</td><td>{{session.start_time}}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

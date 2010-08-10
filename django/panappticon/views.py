@@ -13,6 +13,11 @@ def index(request):
     users = models.ApplicationUser.objects.all().order_by('id')
     return {'users': _paginated_records(request, users)}
 
+@render_to('panappticon/user.html')
+def user(request, id):
+    user = models.ApplicationUser.objects.get(id=id)
+    return {'user': user, 'sessions': user.session_set.all() }
+
 @csrf_exempt
 def iphone_upload(request):
     try:

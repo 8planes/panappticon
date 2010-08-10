@@ -3,7 +3,7 @@
 {% block content %}
 <table>
   {% for user in users.object_list %}
-  <tr><td>{{user.iphone_udid}}</td></tr>
+  <tr><td><a href="{% url panappticon:user user.id %}">{{user.iphone_udid}}</a></td><td>edit</td></tr>
   {% endfor %}
 </table>
 {% endblock %}
