@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<table>
+  {% for user in users.object_list %}
+  <tr><td>{{user.iphone_udid}}</td></tr>
+  {% endfor %}
+</table>
 {% endblock %}

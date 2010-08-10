@@ -67,11 +67,12 @@ static PanappticonDatabase *_instance = nil;
     [startOperation release];
   }
   _cleanupTimer = 
-    [NSTimer timerWithTimeInterval:60.0 
+    [[NSTimer scheduledTimerWithTimeInterval:60.0 
                             target:self 
                           selector:@selector(cleanupNow)
                           userInfo:nil 
-                           repeats:YES];
+                           repeats:YES] retain];
+  [self cleanupNow];
 }
 
 - (void)saveTag:(NSString*)tagName withScreenshot:(UIImage*)screenshot {
@@ -181,12 +182,17 @@ static PanappticonDatabase *_instance = nil;
 - (void)cleanupNow {
   NSFileManager *fileManager = [NSFileManager defaultManager];
   NSArray *fileList = [fileManager contentsOfDirectoryAtPath:_sessionFileDir error:nil];
-  for (NSString* file in fileList)
-    if (file != _sessionFile)
-      [[UploadQueue instance] uploadFile:file withContentType:@"plain/text"];
+  NSString *fullFileName;
+  for (NSString* file in fileList) {
+    fullFileName = [_sessionFileDir stringByAppendingPathComponent:file];
+    if (fullFileName != _sessionFile)
+      [[UploadQueue instance] uploadFile:fullFileName withContentType:@"plain/text"];
+  }
   fileList = [fileManager contentsOfDirectoryAtPath:_imageFileDir error:nil];
   for (NSString* file in fileList)
-    [[UploadQueue instance] uploadFile:file withContentType:@"plain/png"];
+    [[UploadQueue instance] uploadFile:
+     [_sessionFileDir stringByAppendingPathComponent:file] 
+                       withContentType:@"plain/png"];
 }
 
 @end

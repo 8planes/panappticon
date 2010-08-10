@@ -14,10 +14,9 @@ def handle_screenshot_upload(file):
         tag.save()
 
 def handle_session_upload(file):
-    with open(file, "r") as f:
-        contents = f.read()
+    contents = file.read()
 
-    lines = content.split('\n')
+    lines = contents.split('\n')
     
     file_id = lines[0]
     file_upload, created = models.FileUpload.objects.get_or_create(
@@ -48,7 +47,7 @@ def handle_session_upload(file):
 
     line_no = 6
     num_lines = len(lines)
-    while line_no < num_lines:
+    while line_no < num_lines - 2:
         _create_tag(line_no, lines, session, file_upload)
         line_no += 4
 
@@ -64,6 +63,6 @@ def _create_tag(line_no, lines, session, file_upload):
         date = date,
         screenshot_key = screenshot_key)
     if len(screenshot_key) > 0 and \
-            models.Screenshot.objects.exists(key=screenshot_key):
-        tag.screenshot = models.Screenshot.get(key=screenshot_key)
+            models.Screenshot.objects.filter(key=screenshot_key).exists():
+        tag.screenshot = models.Screenshot.objects.get(key=screenshot_key)
     tag.save()

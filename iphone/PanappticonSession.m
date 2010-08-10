@@ -19,6 +19,7 @@ static PanappticonSession *_instance = nil;
 
 - (void)startImpl:(NSString*)appName;
 - (void)tagImpl:(NSString*)tagName includeScreenshot:(BOOL)include;
+- (void)applicationTerminating;
 
 @end
 
@@ -59,8 +60,10 @@ static PanappticonSession *_instance = nil;
                                    userInfo:nil];
     _appName = [appName retain];
   }
-  [[PanappticonDatabase instance] 
-    start:_instance->_appName];
+  [[NSNotificationCenter defaultCenter] 
+   addObserver:self selector:@selector(applicationTerminating) 
+   name:UIApplicationWillTerminateNotification object:[UIApplication sharedApplication]];
+  [[PanappticonDatabase instance] start:_instance->_appName];
 }
 
 - (void)tagImplWithImage:(NSString*)tagName withScreenshot:(UIImage*)screenshot {
@@ -69,6 +72,10 @@ static PanappticonSession *_instance = nil;
 
 - (void)takeScreenshotAndTag:(NSString*)tagName {
   [self tagImplWithImage:tagName withScreenshot:[Utilities screenshot]];
+}
+
+- (void)applicationTerminating {
+  [[PanappticonDatabase instance] endSession];
 }
 
 - (void)tagImpl:(NSString*)tagName includeScreenshot:(BOOL)include {
