@@ -190,7 +190,7 @@ static PanappticonDatabase *_instance = nil;
 - (void)endSessionImpl:(NSNumber*)suspended {
   NSLog(@"Application suspended");
   if ([suspended boolValue])
-    [self appendToSessionFile:@"Application Suspended" screenshotKey:nil];
+    [self appendToSessionFile:@"Application Suspended" screenshotKey:@""];
   [[UploadQueue instance] uploadFile:_sessionFile withContentType:@"plain/text"];
 }
 

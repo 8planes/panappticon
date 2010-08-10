@@ -88,10 +88,12 @@ static PanappticonSession *_instance = nil;
 }
 
 - (void)applicationSuspending {
+  NSLog(@"app suspending");
   [[PanappticonDatabase instance] endSession:YES];
 }
 
 - (void)applicationUnsuspending {
+  NSLog(@"app unsuspending");
   [[PanappticonDatabase instance] newSession];
 }
 
