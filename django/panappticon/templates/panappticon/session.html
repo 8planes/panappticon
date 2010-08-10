@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>{{session.session_id}}</h2>
-<h2>{{session.start_time}}</h2>
+<h2>Session {{session.session_id}}</h2>
+<h4>Started {{session.start_time}}</h4>
+<h4>For user {{session.user.iphone_udid}}</h4>
+<h4>App {{session.application.app_id}}</h4>
 <table>
   {% for tag in tags %}
   <tr>
@@ -10,7 +12,7 @@
     <td>{{tag.tag}}</td>
     <td>
       {% if tag.screenshot %}
-      <img src="{{MEDIA_URL}}{{tag.screenshot.image.url}}"/>
+      <img src="{{tag.screenshot.image.url}}"/>
       {% endif %}
     </td>
   </tr>
