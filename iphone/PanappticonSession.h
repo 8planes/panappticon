@@ -15,7 +15,7 @@
 
 + (PanappticonSession*)instance;
 
-+ (void)start:(NSString*)appName;
++ (void)start:(NSString*)appName withUploadURL:(NSURL*)url;
 + (void)tag:(NSString*)tagName includeScreenshot:(BOOL)include;
 
 @end

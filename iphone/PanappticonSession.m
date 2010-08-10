@@ -11,6 +11,7 @@
 #import "PanappticonSession.h"
 #import "PanappticonDatabase.h"
 #import "Utilities.h"
+#import "UploadQueue.h"
 
 static PanappticonSession *_instance = nil;
 
@@ -38,7 +39,8 @@ static PanappticonSession *_instance = nil;
   return _instance;
 }
 
-+ (void)start:(NSString*)appName {
++ (void)start:(NSString*)appName withUploadURL:(NSURL*)url {
+  [UploadQueue instance].url = url;
   [[PanappticonSession instance] startImpl:appName];
 }
 

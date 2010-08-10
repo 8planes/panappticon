@@ -29,7 +29,7 @@ class Screenshot(models.Model):
 
 class Tag(models.Model):
     file_upload = models.ForeignKey(FileUpload, null=True)
-    line_number = models.IntegerField
+    line_number = models.IntegerField()
     session = models.ForeignKey(Session, null=False)
     tag = models.CharField(max_length=1023)
     date = models.DateTimeField(null=False)

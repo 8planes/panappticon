@@ -1,9 +1,10 @@
 from panappticon import models
 from dateutil import parser
+import os
 
 def handle_screenshot_upload(file):
     name, ext = os.path.splitext(file.name)
-    screenshot, created = models.Screenshot.get_or_create(
+    screenshot, created = models.Screenshot.objects.get_or_create(
         key=name,
         defaults={'image': file})
     tags = list(models.Tag.objects.filter(screenshot_key__exact=name))
@@ -19,7 +20,7 @@ def handle_session_upload(file):
     lines = content.split('\n')
     
     file_id = lines[0]
-    file_upload, created = models.FileUpload.get_or_create(
+    file_upload, created = models.FileUpload.objects.get_or_create(
         file_id=file_id,
         defaults={'contents': contents})
 
@@ -31,10 +32,10 @@ def handle_session_upload(file):
     session_id = lines[3].strip()
     session_start_time = parser.parse(lines[4].strip())
 
-    app, created = models.Application.get_or_create(
+    app, created = models.Application.objects.get_or_create(
         app_id = app_id)
 
-    app_user, created = models.ApplicationUser.get_or_create(
+    app_user, created = models.ApplicationUser.objects.get_or_create(
         iphone_udid=device_udid)
 
     session = models.Session(

@@ -14,6 +14,8 @@
   NSURL *_url;
 }
 
+@property (nonatomic, retain) NSURL* url;
+
 + (UploadQueue*)instance;
 - (void)uploadFile:(NSString*)fileName withContentType:(NSString*)contentType;
 

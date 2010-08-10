@@ -18,6 +18,7 @@ static UploadQueue *_instance = nil;
 @end
 
 @implementation UploadQueue
+@synthesize url = _url;
 
 - (UploadQueue*)init {
   if (self == [super init]) {

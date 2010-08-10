@@ -38,8 +38,8 @@ static PanappticonDatabase *_instance = nil;
       [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                            NSUserDomainMask, YES) 
        objectAtIndex:0];
-    _sessionFileDir = [docPath stringByAppendingPathComponent:@"panappticon/"];
-    _imageFileDir = [docPath stringByAppendingPathComponent:@"pannapticon/screenshots/"];
+    _sessionFileDir = [[docPath stringByAppendingPathComponent:@"panappticon/"] retain];
+    _imageFileDir = [[docPath stringByAppendingPathComponent:@"pannapticon/screenshots/"] retain];
   }
   return self;
 }
@@ -141,8 +141,8 @@ static PanappticonDatabase *_instance = nil;
   _sessionID = [[Utilities randomString] retain];
   [self ensurePathExists:_sessionFileDir];
   [self ensurePathExists:_imageFileDir];
-  _sessionFile = [_sessionFileDir stringByAppendingPathComponent:
-                  [NSString stringWithFormat:@"%@.txt", _sessionID]];
+  _sessionFile = [[_sessionFileDir stringByAppendingPathComponent:
+                  [NSString stringWithFormat:@"%@.txt", _sessionID]] retain];
   NSFileManager *fileManager = [NSFileManager defaultManager];
   NSData *blank = [[NSData alloc] init];
   [fileManager createFileAtPath:_sessionFile contents:blank attributes:nil];
