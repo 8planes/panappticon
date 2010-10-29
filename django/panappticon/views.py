@@ -4,7 +4,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
 from panappticon import upload_handler, models
-from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from decorators import render_to
 
@@ -23,7 +22,6 @@ def session(request, id):
     session = models.Session.objects.get(id=id)
     return { 'session': session, 'tags': session.tag_set.all() }
 
-@csrf_exempt
 def iphone_upload(request):
     try:
         file = request.FILES['file']
