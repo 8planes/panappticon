@@ -1,5 +1,6 @@
 from panappticon import models
 from dateutil import parser
+from pytz import timezone
 import os
 
 def handle_screenshot_upload(file):
@@ -12,6 +13,12 @@ def handle_screenshot_upload(file):
         tag = tags[0]
         tag.screenshot = screenshot
         tag.save()
+
+def _parse_date(date_string):
+    eastern = timezone('US/Eastern')
+    return parser.parse(date_string)\
+        .astimezone(eastern).replace(tzinfo=None)
+    
 
 def handle_session_upload(file):
     contents = file.read()
@@ -29,7 +36,7 @@ def handle_session_upload(file):
     app_id = lines[1].strip()
     device_udid = lines[2].strip()
     session_id = lines[3].strip()
-    session_start_time = parser.parse(lines[4].strip())
+    session_start_time = _parse_date(lines[4].strip())
 
     app, created = models.Application.objects.get_or_create(
         app_id = app_id)
@@ -54,7 +61,7 @@ def handle_session_upload(file):
 def _create_tag(line_no, lines, session, file_upload):
     tag_string = lines[line_no]
     screenshot_key = lines[line_no + 1]
-    date = parser.parse(lines[line_no + 2])
+    date = _parse_date(lines[line_no + 2])
     tag = models.Tag(
         file_upload = file_upload,
         line_number = line_no,
