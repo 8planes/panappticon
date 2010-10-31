@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
+{% load thumbnail %}
+
 {% block content %}
-<h2>Session {{session.session_id}}</h2>
-<h4>Started {{session.start_time}}</h4>
-<h4>For user {{session.user.iphone_udid}}</h4>
+<h4>{{session.start_time}} -- {{session.user.name_to_use}}</h4>
 <h4>App {{session.application.app_id}}</h4>
+{% if session.address %}
+<p>{{session.address}}</p>
+{% endif %}
 <table>
   {% for tag in tags %}
   <tr>
@@ -12,7 +15,7 @@
     <td>{{tag.tag}}</td>
     <td>
       {% if tag.screenshot %}
-      <img src="{{tag.screenshot.image.url}}"/>
+      <img src="{% thumbnail tag.screenshot.image 120x160 %}"/>
       {% endif %}
     </td>
   </tr>

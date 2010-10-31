@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface PanappticonDatabase : NSObject {
   // can be accessed by any thread
@@ -18,6 +19,8 @@
   NSString *_sessionFileDir;
   NSString *_sessionFile;
   NSString *_imageFileDir;
+  CLLocationManager *_locationManager;
+  CLLocation* _lastSavedLocation;
 }
 
 + (PanappticonDatabase*)instance;

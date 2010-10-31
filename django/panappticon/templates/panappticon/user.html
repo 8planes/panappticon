@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>{{user.iphone_udid}}</h2>
+<h2>{{user.name_to_use}}</h2>
+{% if user.notes %}
+<div>{{user.notes}}</div>
+{% endif %}
+<div><a href="{% url panappticon:user_edit user.id %}">Edit</a></div>
+<h3>Sessions</h3>
 <table>
+  <tr>
+    <th></th>
+    <th>Start Time</th>
+    <th>Tag Count</th>
+    <th>Number of minutes</th>
+  </tr>
   {% for session in sessions %}
-  <tr><td><a href="{% url panappticon:session session.id %}">{{session.session_id}}</a></td><td>{{session.start_time}}</td></tr>
+  <tr>
+    <td><a href="{% url panappticon:session session.id %}">View</a></td>
+    <td>{{session.start_time}}</td>
+    <td>{{session.tag_count}}</td>
+    <td>{{session.minutes_in_session}}</td>
+  </tr>
   {% endfor %}
 </table>
 {% endblock %}

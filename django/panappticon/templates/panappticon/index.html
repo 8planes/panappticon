@@ -2,8 +2,21 @@
 
 {% block content %}
 <table>
+  <tr>
+    <th></th>
+    <th>UDID or Name</th>
+    <th>Notes</th>
+    <th>Number of sessions</th>
+    <th>Number of events</th>
+  </tr>
   {% for user in users.object_list %}
-  <tr><td><a href="{% url panappticon:user user.id %}">{{user.iphone_udid}}</a></td><td>edit</td></tr>
+  <tr>
+    <td><a href="{% url panappticon:user user.id %}">view</a></td>
+    <td>{{user.name_to_use}}</td>
+    <td>{{user.notes|truncatewords:6}}</td>
+    <td>{{user.session_count}}</td>
+    <td>{{user.tag_count}}</td>
+  </tr>
   {% endfor %}
 </table>
 {% endblock %}

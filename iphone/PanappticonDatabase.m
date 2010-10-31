@@ -25,6 +25,8 @@ static PanappticonDatabase *_instance = nil;
 - (void)saveAndSendImageFile:(UIImage*)screenshot withKey:(NSString*)screenshotKey;
 - (void)cleanupNow;
 - (void)cleanupNowImpl;
+- (CLLocation*)location;
+- (NSString*)locationString;
 
 @end
 
@@ -160,10 +162,11 @@ static PanappticonDatabase *_instance = nil;
   NSData *blank = [[NSData alloc] init];
   [fileManager createFileAtPath:_sessionFile contents:blank attributes:nil];
   [blank release];
-  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n\n",
+  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@\n\n",
                                    [Utilities randomString], _appName, 
                                    [[UIDevice currentDevice] uniqueIdentifier],
-                                   _sessionID, [NSDate date]]];
+                                   _sessionID, [NSDate date], 
+                                   [self locationString]]];
 }
 
 - (void)appendStringToSessionFile:(NSString*)string {
@@ -174,8 +177,8 @@ static PanappticonDatabase *_instance = nil;
 }
 
 - (void)appendToSessionFile:(NSString*)tagName screenshotKey:(NSString*)screenshotKey {
-  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n\n",
-                                   tagName, screenshotKey, [NSDate date]]];
+  [self appendStringToSessionFile:[NSString stringWithFormat:@"%@\n%@\n%@\n%@\n\n",
+                                   tagName, screenshotKey, [NSDate date], [self locationString]]];
 }
 
 - (void)saveAndSendImageFile:(UIImage*)screenshot withKey:(NSString*)screenshotKey {
@@ -215,6 +218,33 @@ static PanappticonDatabase *_instance = nil;
     [[UploadQueue instance] uploadFile:
      [_imageFileDir stringByAppendingPathComponent:file] 
                        withContentType:@"plain/png"];
+}
+
+- (NSString*)locationString {
+  CLLocation *currentLocation = [self location];
+  if (currentLocation != nil) {
+    CLLocationCoordinate2D coord = [currentLocation coordinate];
+    return [NSString stringWithFormat:@"%@,%@", coord.latitude, coord.longitude];
+  }
+  else 
+    return @"";
+}
+
+- (CLLocation*)location {
+  if (_locationManager == nil) {
+    _locationManager = [[CLLocationManager alloc] init];
+    [_locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+    [_locationManager startUpdatingLocation];
+  }
+  CLLocation *currentLocation = [_locationManager location];
+  if (currentLocation != nil &&
+      (_lastSavedLocation != nil ||
+       [currentLocation distanceFromLocation:_lastSavedLocation] > 15)) {
+    _lastSavedLocation = currentLocation;
+    return currentLocation;
+  }
+  else 
+    return nil;
 }
 
 @end

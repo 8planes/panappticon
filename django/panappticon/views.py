@@ -1,22 +1,45 @@
 import logging
 import os
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponse
 from panappticon import upload_handler, models
+from panappticon import forms
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from decorators import render_to
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 @render_to('panappticon/index.html')
 def index(request):
     users = models.ApplicationUser.objects.all().order_by('id')
     return {'users': _paginated_records(request, users)}
 
+@login_required
 @render_to('panappticon/user.html')
 def user(request, id):
     user = models.ApplicationUser.objects.get(id=id)
     return {'user': user, 'sessions': user.session_set.all() }
 
+@login_required
+def user_edit(request, id):
+    user = models.ApplicationUser.objects.get(id=id)
+    if request.method == 'POST':
+        form = forms.EditApplicationUserForm(
+            request.POST,
+            instance=user)
+        form.save()
+        return redirect('panappticon:user', id)
+    else:
+        form = forms.EditApplicationUserForm(instance=user)
+        context = { 'form': form, 'user': user }
+        return render_to_response(
+            'panappticon/user_edit.html', context,
+            context_instance=RequestContext(request))    
+
+
+@login_required
 @render_to('panappticon/session.html')
 def session(request, id):
     session = models.Session.objects.get(id=id)
