@@ -22,7 +22,7 @@ class ApplicationUser(models.Model):
 
     @property
     def name_to_use(self):
-        return self.name if self.name else iphone_udid
+        return self.name if self.name else self.iphone_udid
 
     def update_stats(self):
         all_sessions = self.session_set.all()
