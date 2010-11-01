@@ -224,7 +224,7 @@ static PanappticonDatabase *_instance = nil;
   CLLocation *currentLocation = [self location];
   if (currentLocation != nil) {
     CLLocationCoordinate2D coord = [currentLocation coordinate];
-    return [NSString stringWithFormat:@"%@,%@", coord.latitude, coord.longitude];
+    return [NSString stringWithFormat:@"%.5f,%.5f", coord.latitude, coord.longitude];
   }
   else 
     return @"";
@@ -238,9 +238,10 @@ static PanappticonDatabase *_instance = nil;
   }
   CLLocation *currentLocation = [_locationManager location];
   if (currentLocation != nil &&
-      (_lastSavedLocation != nil ||
+      (_lastSavedLocation == nil ||
        [currentLocation distanceFromLocation:_lastSavedLocation] > 15)) {
-    _lastSavedLocation = currentLocation;
+    [_lastSavedLocation release];
+    _lastSavedLocation = [currentLocation retain];
     return currentLocation;
   }
   else 
